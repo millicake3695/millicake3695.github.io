@@ -1,0 +1,15 @@
+{
+  "name": "millicake3695.github.io",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/millicake3695/millicake3695.github.io.git",
+  "author": "qianzhang <qianzhang@upchina.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.8.2"
+  },
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  }
+}
