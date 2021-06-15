@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Hello World',
+  title: 'Hello World Hello World',
   description: 'Just playing around',
   theme: '@vuepress/blog',
   themeConfig: {
