@@ -26,6 +26,6 @@ Make a Even Better Life
 
 ```js
 export function eat () {
-  return Math.PI() * 0.5;
+  return Math.PI * 0.5;
 }
 ```
