@@ -20,7 +20,7 @@ jobs:
 
     # 这里展示了如何执行多条命令
     - name: Build and Deploy
-      uses: JamesIves/github-pages-deploy-action@4.0.0
+      uses: JamesIves/github-pages-deploy-action@master
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: dev
