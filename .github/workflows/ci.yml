@@ -1,17 +1,26 @@
-name: GitHub Actions Build and Deploy
+name: CI
+
+# 指定触发workflow的条件
+# 下面的意思就是在监听到main分支push操作的时候运行
 on:
   push:
-    branches:
-      - main
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@main
+    branches: [ main ]
 
+# jobs 表示要执行的一项或者多项任务
+jobs:
+  # 任务名，可自定义
+  build-and-deploy:
+    # runs-on字段指定运行所需要的虚拟机环境。必填。目前可用的虚拟机如下。
+    runs-on: ubuntu-latest
+    # steps表示执行步骤
+    steps:
+    # 检出代码，这里用了 actions/checkout@master 库来完成
+    - name: Checkout
+      uses: actions/checkout@master
+
+    # 这里展示了如何执行多条命令
     - name: Build and Deploy
-      uses: JamesIves/github-pages-deploy-action@main
+      uses: JamesIves/github-pages-deploy-action@4.0.0
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: dev
