@@ -5,7 +5,6 @@
   "repository": "https://github.com/millicake3695/millicake3695.github.io.git",
   "author": "qianzhang <qianzhang@upchina.com>",
   "license": "MIT",
-  "homepage": "https://millicake3695.github.io/",
   "devDependencies": {
     "vuepress": "^1.8.2"
   },
