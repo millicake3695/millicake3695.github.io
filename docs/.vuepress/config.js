@@ -2,6 +2,7 @@ module.exports = {
   base: '/millicake3695.github.io/',
   title: 'millicake3695',  // 设置网站标题
   description : 'millicake3695‘s blog',
+  base: '/',
   themeConfig : {
     logo: 'logo.png',
     nav : [
