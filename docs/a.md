@@ -89,6 +89,8 @@
 
     - `git branch -D dev`: 强行删除未合并的dev分支
 
+    - `git push origin --delete dev`: 删除远程dev分支
+
     - `git checkout dev`、`git switch dev`: 切换至dev分支
 
     - `git merge dev`: 合并指定分支到当前分支，合并是“快进模式”，也就是直接把master指向dev的当前提交
