@@ -1,3 +1,5 @@
+# millicake3695's magic box
+
 - docs/.vuepress: 用于存放全局的配置、组件、静态资源等。
 
 - docs/.vuepress/components: 该目录中的 Vue 组件将会被自动注册为全局组件。
