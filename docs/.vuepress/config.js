@@ -2,8 +2,8 @@ module.exports = {
   base: '/', // 必须 静态资源访问
   title: 'millicake3695',  // 设置网站标题
   description : 'millicake3695‘s blog',
-  evergreen: false, // 禁止 ESNext 到 ES5 的转译以及对 IE 的 polyfills，同时会带来更快的构建速度和更小的文件体积。
-  plugins: ['@vuepress/back-to-top'],
+  // evergreen: false, // 禁止 ESNext 到 ES5 的转译以及对 IE 的 polyfills，同时会带来更快的构建速度和更小的文件体积。
+  // plugins: ['@vuepress/back-to-top'],
   head: [
     ['link', { rel: 'icon', href: '/logo.png' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
@@ -47,6 +47,12 @@ module.exports = {
         title: 'Mysql API',
         path: '/sql'
       },
+      // {
+      //   title: 'Vue2',
+      //   path: '/vue2/',
+      //   children: [ '', 'axios' ]
+      //   // children: [ '/index', '/axios', '/lifeCycleHooks', '/modifier', '/mustache', '/router', '/slot' ]
+      // }
     ],
     sidebarDepth: 2, // 0禁用标题（headers）链接； 1默认值,只显示h2的标题； 2可设置的最大值，再大无效, 同时提取h2和h3标题
     lastUpdated: 'last updated'
