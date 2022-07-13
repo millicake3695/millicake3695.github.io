@@ -1,3 +1,5 @@
+### basic config
+
 [Emoji](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.json)
 
 :tada: :tada: :tada:

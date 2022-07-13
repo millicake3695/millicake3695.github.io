@@ -47,12 +47,21 @@ module.exports = {
         title: 'Mysql API',
         path: '/sql'
       },
-      // {
-      //   title: 'Vue2',
-      //   path: '/vue2/',
-      //   children: [ '', 'axios' ]
-      //   // children: [ '/index', '/axios', '/lifeCycleHooks', '/modifier', '/mustache', '/router', '/slot' ]
-      // }
+      {
+        title: 'Vue2',      // 必要的
+        // path: '/vue2/',     // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+        collapsable: true,  // 可选的, 默认值是 true,
+        sidebarDepth: 0,    // 可选的, 默认值是 1
+        children: [
+          '/vue2/',
+          '/vue2/axios',
+          '/vue2/lifeCycleHooks',
+          '/vue2/modifier',
+          '/vue2/mustache',
+          '/vue2/router',
+          '/vue2/slot'
+        ] // 绝对路径
+      }
     ],
     sidebarDepth: 2, // 0禁用标题（headers）链接； 1默认值,只显示h2的标题； 2可设置的最大值，再大无效, 同时提取h2和h3标题
     lastUpdated: 'last updated'
