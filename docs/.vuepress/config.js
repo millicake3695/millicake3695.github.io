@@ -2,7 +2,7 @@ module.exports = {
   base: '/', // 必须 静态资源访问
   title: 'millicake3695',  // 设置网站标题
   description : 'millicake3695‘s blog',
-  evergreen: true, // 禁止 ESNext 到 ES5 的转译以及对 IE 的 polyfills，同时会带来更快的构建速度和更小的文件体积。
+  evergreen: false, // 禁止 ESNext 到 ES5 的转译以及对 IE 的 polyfills，同时会带来更快的构建速度和更小的文件体积。
   plugins: ['@vuepress/back-to-top'],
   head: [
     ['link', { rel: 'icon', href: '/logo.png' }],
