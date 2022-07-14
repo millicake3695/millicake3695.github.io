@@ -1,3 +1,5 @@
+### Differences on iOS & Android
+
 1. `css: font-weight: 100 - 900 / lighter / normal / bold / bolder`  
     ios: 表现正常  
     android: 字体样式不正常，不能设置为数字。  

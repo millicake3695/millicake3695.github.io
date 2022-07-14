@@ -1,4 +1,4 @@
-- 主要收集日常工作常用 sql
+### 日常使用的 sql
 
 npm dependencies: @up/tg-data-async
 
