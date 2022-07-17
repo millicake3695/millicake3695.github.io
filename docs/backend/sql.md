@@ -1,4 +1,7 @@
-### 日常使用的 sql
+### MYSQL GUI Tools
+Mac OS X: 	http://www.sequelpro.com/
+Windows: 	https://www.heidisql.com/
+
 
 npm dependencies: @up/tg-data-async
 

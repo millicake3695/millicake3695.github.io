@@ -1,9 +1,10 @@
 module.exports = {
   base: '/', // 必须 静态资源访问
+  cache: false, // 每次构建前删除cache
   title: 'Hello, Stranger',  // 设置网站标题
   description : 'millicake3695‘s blog',
   // evergreen: false, // 禁止 ESNext 到 ES5 的转译以及对 IE 的 polyfills，同时会带来更快的构建速度和更小的文件体积。
-  // plugins: ['@vuepress/back-to-top'],
+  plugins: ['@vuepress/back-to-top'],
   head: [
     ['link', { rel: 'icon', href: '/logo.png' }], // favicon
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
@@ -75,7 +76,8 @@ module.exports = {
         title: 'Front-End',
         collapsable: false,
         children: [
-          '/frontend/mobile'
+          '/frontend/mobile',
+          'frontend/exportExcel'
         ]
       },
       {

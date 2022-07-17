@@ -10,7 +10,7 @@
 
     mac 终端下 git 集成在 xcode 下，但是 xcode 非常大，可通过以下命令只安装 git。
 
-    ```js
+    ```shell
     xcode-select install
     git init
     ```
@@ -23,19 +23,19 @@
 
     将原地址（注意修改npm镜像 nrm use cnpm / taobao）
 
-    ```
+    ```shell
     git clone https://github.com/lodash/lodash.git
     ```
 
     改为
 
-    ```
+    ```shell
     git clone https://github.com.cnpmjs.org/lodash/lodash.git
     ```
 
 3. 设置ssh
 
-    ```js
+    ```shell
     $ ssh-keygen -t rsa -C "youremail@example.com"
     entry password
     ...

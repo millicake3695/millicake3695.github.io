@@ -1,199 +1,199 @@
 ### Redis API
 
 ```js
-const proxyTarget = 'DCache.GDZQProxyServer.ProxyObj@tcp -h 172.16.8.201 -t 60000 -p 19301';
-const moduleName = 'GDZQTgTips';
+const proxyTarget = 'DCache.XXXXProxyServer.ProxyObj@tcp -h 127.0.0.1 -t 60000 -p 8888';
+const moduleName = 'XXXXTgUser';
 const cache = require('@up/taf-dcache-srf')(proxyTarget, moduleName).toPromise();
 ```
 
 ### Key (键)
 
-    keys  
-    exists key  
-    type key  
-    del key | key ... | Array(key)
+  keys  
+  exists key  
+  type key  
+  del key | key ... | Array(key)
 
 ### String (字符串)
 
-    set key value  
-    get key  
-    incr key  
-    incrby key increment  
-    mset key value | key value ... | Map(key -> value) | Object(key, value)  
-    mget key | key ... | Array(key)  
-    mget2obj key | key ... | Array(key)  
-    setex key value  
-    setnx key value  
+  set key value  
+  get key  
+  incr key  
+  incrby key increment  
+  mset key value | key value ... | Map(key -> value) | Object(key, value)  
+  mget key | key ... | Array(key)  
+  mget2obj key | key ... | Array(key)  
+  setex key value  
+  setnx key value  
 
 ### SortedSet (有序集合)
 
-    zadd key score member | score member ... | Map(member -> score) | Object(member: score)  
-    zcard key  
-    zcount key min max  
-    zscore key member  
-    zincrby key increment member  
-    zrem key member | member ... | Array(member) | Set(member)   zremrangebyscore key min max  
-    zremrangebyrank key start stop  
-    zrange key start stop [WITHSCORES]  
-    zrevrange key start stop [WITHSCORES]  
-    zrangebyscore key min max [WITHSCORES] [LIMIT offset count]  
-    zrevrangebyscore key max min [WITHSCORES] [LIMIT offset count]  
-    zrangebyscore2map key min max [WITHSCORES] [LIMIT offset count]  
-    zrevrangebyscore2map key max min [WITHSCORES] [LIMIT offset count]  
-    zrank key member  
-    zrevrank key member  
+  zadd key score member | score member ... | Map(member -> score) | Object(member: score)  
+  zcard key  
+  zcount key min max  
+  zscore key member  
+  zincrby key increment member  
+  zrem key member | member ... | Array(member) | Set(member)   zremrangebyscore key min max  
+  zremrangebyrank key start stop  
+  zrange key start stop [WITHSCORES]  
+  zrevrange key start stop [WITHSCORES]  
+  zrangebyscore key min max [WITHSCORES] [LIMIT offset count]  
+  zrevrangebyscore key max min [WITHSCORES] [LIMIT offset count]  
+  zrangebyscore2map key min max [WITHSCORES] [LIMIT offset count]  
+  zrevrangebyscore2map key max min [WITHSCORES] [LIMIT offset count]  
+  zrank key member  
+  zrevrank key member  
 
 ### Hash (哈希表)
 
-    hset key field value  
-    hsetnx key field value  
-    hget key field  
-    hgetall key  
-    mhgetall key | [ key ...]  
-    mhgetall2obj key | [ key ...]  
-    hincrby key field increment  
-    hmset key field value | field value ... | Object(field, value)  
-    hmget key field | field ... | Array(field) | Set(field)  
-    hdel key field | field ... | Array(field) | Set(field)  
-    hexists key field | field ... | Array(field) | Set(field)  
-    hkeys key  
-    hlen key  
+  hset key field value  
+  hsetnx key field value  
+  hget key field  
+  hgetall key  
+  mhgetall key | [ key ...]  
+  mhgetall2obj key | [ key ...]  
+  hincrby key field increment  
+  hmset key field value | field value ... | Object(field, value)  
+  hmget key field | field ... | Array(field) | Set(field)  
+  hdel key field | field ... | Array(field) | Set(field)  
+  hexists key field | field ... | Array(field) | Set(field)  
+  hkeys key  
+  hlen key  
 
 ### List (列表)
 
-    lpop, lpush, lrange, lrem, lset, rpop, rpush
+  lpop, lpush, lrange, lrem, lset, rpop, rpush
 
 ### Set (集合)
 
-    sadd key member | member ... | Array(member) | Set(member)  
-    scard key  
-    srem key member | member ... | Array(member) | Set(member)  
-    smembers key  
-    sismember key member
+  sadd key member | member ... | Array(member) | Set(member)  
+  scard key  
+  srem key member | member ... | Array(member) | Set(member)  
+  smembers key  
+  sismember key member
 
-  ```js
-  (async () => {
-    const [ key, value ] = [ 'key', { key: 'value' } ];
-    
-    await cache.keys(); // 查找所有 key 值(cache && DB) 不建议使用
-
-    await cache.del(key); // 总是返回 true
-    await cache.del('key1', 'key2'); // 删除多个 key
-
-    // 将key设置为指定的字符串值。无论key是否有值
-    await cache.set(key, value); // true
-    // 返回 value 或 null
-    await cache.get(key); // { AAA: 'value' }
-
-    // 批量设置 [key1, value1, key2, value2] | { key: value }
-    await cache.mset(['a', 1, 'b', 2]); // true
-    await cache.mset({ c: 3, d: 4 }); // true
+```js
+(async () => {
+  const [ key, value ] = [ 'key', { key: 'value' } ];
   
-    // 批量获取(100条以下为宜) 返回 Array
-    await cache.mget('a', 'b', 'c', 'd'); // [1, 2, 3, 4]
-    await cache.mget(['a', 'b', 'c', 'd']); // [1, 2, 3, 4]
+  await cache.keys(); // 查找所有 key 值(cache && DB) 不建议使用
 
-    // 对key对应的value执行原子的+1操作。
-    // key对应的value被解析为10进制的64位有符号整型数据。value不存在时置为0
-    // 返回执行递增操作后的value
-    await cache.incr('a'); // 2
-    // 将key对应的value加increment, 返回操作后的value。value不存在时置为0
-    await cache.incrby('a', 2) // 4
+  await cache.del(key); // 总是返回 true
+  await cache.del('key1', 'key2'); // 删除多个 key
 
-    // 将所有指定成员添加到键为key有序集合, 添加时可以指定多个分数/成员对
-    // score/member: new Map() | {key: 'value'} | [value, key] | value, key
-    // 置顶|点赞|关注|子产品...
-    await cache.zadd('key', { a: 1, b: 2, c: 3 }); // true
+  // 将key设置为指定的字符串值。无论key是否有值
+  await cache.set(key, value); // true
+  // 返回 value 或 null
+  await cache.get(key); // { AAA: 'value' }
 
-    // 返回有序集合key中指定索引范围的元素
-    // 元素按得分从低到高排序。得分相同，按字典排序。
-    // 参数start和stop都是基于零的索引。
-    // 负索引表示从有序集合末尾的偏移量，-1是有序集合最后一个元素。
-    await cache.zrange('key', 1, 1); // ['b']
-    await cache.zrange('key', 1, 2, cache.CONSTANT.WITHSCORES); // ['b', 2, 'c', 3]
+  // 批量设置 [key1, value1, key2, value2] | { key: value }
+  await cache.mset(['a', 1, 'b', 2]); // true
+  await cache.mset({ c: 3, d: 4 }); // true
 
-    // 返回有序集合key中分数处于[min, max]的所有元素。
-    // 元素从低分到高分排序。
-    await cache.zrangebyscore('key', '-inf', '+inf'); // [ 'a', 'b', 'c' ]
-    await cache.zrangebyscore('key', '-inf', '+inf', cache.CONSTANT.WITHSCORES); // [ 'a', 1, 'b', 2, 'c', 3 ]
-    await cache.zrangebyscore('key', '-inf', '+inf', cache.CONSTANT.WITHSCORES, cache.CONSTANT.LIMIT, 0, 2); // [ 'a', 1, 'b', 2 ]
+  // 批量获取(100条以下为宜) 返回 Array
+  await cache.mget('a', 'b', 'c', 'd'); // [1, 2, 3, 4]
+  await cache.mget(['a', 'b', 'c', 'd']); // [1, 2, 3, 4]
 
-    // 返回指定区间内的成员。成员的位置按score值递减来排列。具有相同score值的成员按字典序的反序排列。
-    await cache.zrevrange('key', 0, 0); // ['c']
+  // 对key对应的value执行原子的+1操作。
+  // key对应的value被解析为10进制的64位有符号整型数据。value不存在时置为0
+  // 返回执行递增操作后的value
+  await cache.incr('a'); // 2
+  // 将key对应的value加increment, 返回操作后的value。value不存在时置为0
+  await cache.incrby('a', 2) // 4
 
-    // 返回有序集合中指定分数区间内的成员，分数由高到低排序
-    // ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
-    // LIMIT: 返回结果是否分页, 指令中包含LIMIT后 offset、count 必须输入
-    await cache.zrevrangebyscore('key', '+inf', '-inf'); // ['c', 'b', 'a']
-    await cache.zrevrangebyscore('key', '+inf', '-inf', cache.CONSTANT.WITHSCORES); // ['c', 3, 'b', 2, 'a', 1]
-    await cache.zrevrangebyscore('key', '+inf', '-inf', cache.CONSTANT.WITHSCORES, cache.CONSTANT.LIMIT, 0, 2); // ['c', 3, 'b', 2]
+  // 将所有指定成员添加到键为key有序集合, 添加时可以指定多个分数/成员对
+  // score/member: new Map() | {key: 'value'} | [value, key] | value, key
+  // 置顶|点赞|关注|子产品...
+  await cache.zadd('key', { a: 1, b: 2, c: 3 }); // true
 
-    // 当key存在且不是zset类型，返回错误。
-    // 返回从有序集合中删除的成员个数，不包括不存在的成员
-    await cache.zrem('not_exist_key', d); // error
-    await cache.zrem('key', d); // 0
-    await cache.zrem('key', a, b); // 2
+  // 返回有序集合key中指定索引范围的元素
+  // 元素按得分从低到高排序。得分相同，按字典排序。
+  // 参数start和stop都是基于零的索引。
+  // 负索引表示从有序集合末尾的偏移量，-1是有序集合最后一个元素。
+  await cache.zrange('key', 1, 1); // ['b']
+  await cache.zrange('key', 1, 2, cache.CONSTANT.WITHSCORES); // ['b', 2, 'c', 3]
 
-    // 删除有序集合key中所有分数介于[min, max]的成员, 返回被删除成员个数
-    await cache.zremrangebyscore('key', 1, 1); // 1
+  // 返回有序集合key中分数处于[min, max]的所有元素。
+  // 元素从低分到高分排序。
+  await cache.zrangebyscore('key', '-inf', '+inf'); // [ 'a', 'b', 'c' ]
+  await cache.zrangebyscore('key', '-inf', '+inf', cache.CONSTANT.WITHSCORES); // [ 'a', 1, 'b', 2, 'c', 3 ]
+  await cache.zrangebyscore('key', '-inf', '+inf', cache.CONSTANT.WITHSCORES, cache.CONSTANT.LIMIT, 0, 2); // [ 'a', 1, 'b', 2 ]
 
-    // 删除有序集中指定排名[start, stop]之间的成员, 返回被删除成员个数。
-    // 下标参数start和stop都以0为底，0处是分数最小的那个元素。
-    // 索引也可以为负数，-1是分数最高的元素。
-    await cache.zremrangebyrank('key', 0, 0); // 1
+  // 返回指定区间内的成员。成员的位置按score值递减来排列。具有相同score值的成员按字典序的反序排列。
+  await cache.zrevrange('key', 0, 0); // ['c']
 
-    // 返回有序集key中成员member的排名。有序集成员默认按score值递增顺序排列。
-    // score值最小的成员排名为0
-    // 使用ZREVRANK命令可以获得成员按score值递减(从大到小)排列的排名。
-    await cache.zrank('key', 'a'); // 0 
-    await cache.zrevrank('key', 'a'); // 3 
+  // 返回有序集合中指定分数区间内的成员，分数由高到低排序
+  // ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
+  // LIMIT: 返回结果是否分页, 指令中包含LIMIT后 offset、count 必须输入
+  await cache.zrevrangebyscore('key', '+inf', '-inf'); // ['c', 'b', 'a']
+  await cache.zrevrangebyscore('key', '+inf', '-inf', cache.CONSTANT.WITHSCORES); // ['c', 3, 'b', 2, 'a', 1]
+  await cache.zrevrangebyscore('key', '+inf', '-inf', cache.CONSTANT.WITHSCORES, cache.CONSTANT.LIMIT, 0, 2); // ['c', 3, 'b', 2]
 
-    // 返回key的有序集元素个数，key不存在返回0
-    await cache.zcard('key');
+  // 当key存在且不是zset类型，返回错误。
+  // 返回从有序集合中删除的成员个数，不包括不存在的成员
+  await cache.zrem('not_exist_key', d); // error
+  await cache.zrem('key', d); // 0
+  await cache.zrem('key', a, b); // 2
 
-    // 返回有序集key中score值在[min, max]之间的成员
-    await cache.zcount('key');
+  // 删除有序集合key中所有分数介于[min, max]的成员, 返回被删除成员个数
+  await cache.zremrangebyscore('key', 1, 1); // 1
 
-    // 返回有序集key中成员member的score值。如果member元素不是成员或key不存在，返回null。
-    await cache.zscore('key', 'd'); // null
+  // 删除有序集中指定排名[start, stop]之间的成员, 返回被删除成员个数。
+  // 下标参数start和stop都以0为底，0处是分数最小的那个元素。
+  // 索引也可以为负数，-1是分数最高的元素。
+  await cache.zremrangebyrank('key', 0, 0); // 1
 
-    // 设置hkey指定的哈希集中指定字段的值。重写hkey指定的哈希集，不管是否存在。返回true。field只能为字符串！！！
-    // 名称-id 搜索
-    await cache.hset('hkey', 'field', { a: 1 }); // true
-    await cache.hset('hkey', 'field', { a: 2 }); // true
+  // 返回有序集key中成员member的排名。有序集成员默认按score值递增顺序排列。
+  // score值最小的成员排名为0
+  // 使用ZREVRANK命令可以获得成员按score值递减(从大到小)排列的排名。
+  await cache.zrank('key', 'a'); // 0 
+  await cache.zrevrank('key', 'a'); // 3 
 
-    // 返回hkey指定的哈希集中field所关联的值; field不存在或者hkey不存在时返回null。
-    await cache.hget('hkey', 'field2'); // null
-    await cache.hget('hkey', 'field'); // { a: 2 }
+  // 返回key的有序集元素个数，key不存在返回0
+  await cache.zcard('key');
 
-    // 设置hkey指定的哈希集中指定field的值
-    await cache.hmset('hkey2', { a: '11', b: '22' }); // true
-    await cache.hmset('hkey2', c, '33', b, '44'); // true
+  // 返回有序集key中score值在[min, max]之间的成员
+  await cache.zcount('key');
 
-    // 返回hkey指定的哈希集中所有的field和value。返回值中，每个字段名的下一个是它的值。
-    // 当hkey指定的哈希集不存在时返回null。
-    await cache.hgetall('hkey2'); // { c: '33', d: '44', a: '11', b: '22' }
-    await cache.hgetall('hkey3'); // null
+  // 返回有序集key中成员member的score值。如果member元素不是成员或key不存在，返回null。
+  await cache.zscore('key', 'd'); // null
 
-    // 返回hkey指定的哈希集中指定字段的值
-    await cache.hmget('hkey2', ['a', 'b']); // { a: '11', b: '22' }
-    await cache.hmget('hkey2', 'c', 'd'); // { c: '33', d: '44' }
-    await cache.hmget('hkey2', 'e'); // {}
-    await cache.hmget('hkey3', 'e'); // null
+  // 设置hkey指定的哈希集中指定字段的值。重写hkey指定的哈希集，不管是否存在。返回true。field只能为字符串！！！
+  // 名称-id 搜索
+  await cache.hset('hkey', 'field', { a: 1 }); // true
+  await cache.hset('hkey', 'field', { a: 2 }); // true
 
-    // 从hkey指定的哈希集中移除指定的field。不存在的field将被忽略。返回成功删除的field的数量。
-    await cache.hdel('hkey2', 'a'); // 1
-    await cache.hdel('hkey2', 'e'); // 0
+  // 返回hkey指定的哈希集中field所关联的值; field不存在或者hkey不存在时返回null。
+  await cache.hget('hkey', 'field2'); // null
+  await cache.hget('hkey', 'field'); // { a: 2 }
 
-    // 增加hkey指定的field中指定字段的数值。
-    // 如果hkey不存在，会创建一个新的哈希集并与hkey关联。
-    // 如果field不存在，则field的值在该操作执行前被设置为 0。
-    // HINCRBY 支持的值的范围限定在 64位 有符号整数
-    await cache.hincrby('hkey2', 'b', 10); // 32
-    await cache.hincrby('hkey2', 'b', -5); // 27
+  // 设置hkey指定的哈希集中指定field的值
+  await cache.hmset('hkey2', { a: '11', b: '22' }); // true
+  await cache.hmset('hkey2', c, '33', b, '44'); // true
 
-  })();
-  ```
+  // 返回hkey指定的哈希集中所有的field和value。返回值中，每个字段名的下一个是它的值。
+  // 当hkey指定的哈希集不存在时返回null。
+  await cache.hgetall('hkey2'); // { c: '33', d: '44', a: '11', b: '22' }
+  await cache.hgetall('hkey3'); // null
+
+  // 返回hkey指定的哈希集中指定字段的值
+  await cache.hmget('hkey2', ['a', 'b']); // { a: '11', b: '22' }
+  await cache.hmget('hkey2', 'c', 'd'); // { c: '33', d: '44' }
+  await cache.hmget('hkey2', 'e'); // {}
+  await cache.hmget('hkey3', 'e'); // null
+
+  // 从hkey指定的哈希集中移除指定的field。不存在的field将被忽略。返回成功删除的field的数量。
+  await cache.hdel('hkey2', 'a'); // 1
+  await cache.hdel('hkey2', 'e'); // 0
+
+  // 增加hkey指定的field中指定字段的数值。
+  // 如果hkey不存在，会创建一个新的哈希集并与hkey关联。
+  // 如果field不存在，则field的值在该操作执行前被设置为 0。
+  // HINCRBY 支持的值的范围限定在 64位 有符号整数
+  await cache.hincrby('hkey2', 'b', 10); // 32
+  await cache.hincrby('hkey2', 'b', -5); // 27
+
+})();
+```
 
 
 ### DCache Notes
