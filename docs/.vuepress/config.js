@@ -16,10 +16,8 @@ module.exports = {
   themeConfig : {
     logo: 'logo.png',
     nav : [
-      { text: '基本配置', link: '/config' },
-      { text: 'Git', link: '/git' },
-      { text: 'Mobile', link: '/mobile' },
-      { text: 'Redis', link: '/redis' },
+      { text: '基本配置', link: '/vuepress' },
+      { text: 'Git', link: '/tools/git' },
       {
         text: 'ES6',
         target: '_blank',
