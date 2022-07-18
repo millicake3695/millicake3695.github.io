@@ -1,4 +1,4 @@
-### Differences on iOS & Android
+### 移动端兼容
 
 1. `css: font-weight: 100 - 900 / lighter / normal / bold / bolder`  
     ios: 表现正常  
@@ -22,6 +22,7 @@
       <span v-else>点赞</span> 
     </template>
     ```
+
     ```js
     <script>
     export default {
@@ -42,8 +43,6 @@
           }, 100);
         },
         onSend () {
-          // ...
-          console.log('send invoke');
           this.message = '';
           this.isFocus = false;
         }

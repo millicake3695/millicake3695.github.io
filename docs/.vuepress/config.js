@@ -34,7 +34,8 @@ module.exports = {
       {
         title: 'VuePress',
         path: '/vuepress',
-        sidebarDepth: 2 // 0禁用标题链接；1默认值,只显示h2的标题；2提取h2和h3标题
+        // sidebarDepth: 2 // 0禁用标题链接；1默认值,只显示h2的标题；2提取h2和h3标题
+        collapsable: false, // 可选的, 默认值 true, 让一个组永远都是展开状态
       },
       {
         title: 'Daily',
@@ -51,10 +52,22 @@ module.exports = {
         ]
       },
       {
-        title: 'Vue2',      // 必要的
-        // path: '/vue2/',  // 可选的, 标题的跳转链接，应为绝对路径且必须存在
-        collapsable: false, // 可选的, 默认值 true, 让一个组永远都是展开状态
-        sidebarDepth: 0,    // 可选的
+        title: 'Front-End',
+        collapsable: false,
+        children: [
+          '/frontend/noun',
+          '/frontend/css',
+          '/frontend/mobile',
+          'frontend/exportExcel',
+          'frontend/regularExpressions',
+          'frontend/sensitiveword',
+          'frontend/h5scroll',
+          'frontend/webpack',
+        ]
+      },
+      {
+        title: 'Vue2',
+        collapsable: false,
         children: [
           '/vue2/',
           '/vue2/axios',
@@ -73,14 +86,6 @@ module.exports = {
         ]
       },
       {
-        title: 'Front-End',
-        collapsable: false,
-        children: [
-          '/frontend/mobile',
-          'frontend/exportExcel'
-        ]
-      },
-      {
         title: 'Back-End',
         collapsable: false,
         children: [
@@ -89,6 +94,7 @@ module.exports = {
         ]
       },
     ],
+    sidebarDepth: 2,
     lastUpdated: 'last updated'
   }
 }
