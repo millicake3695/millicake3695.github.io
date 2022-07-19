@@ -1,11 +1,5 @@
 ### Redis API
 
-```js
-const proxyTarget = 'DCache.XXXXProxyServer.ProxyObj@tcp -h 127.0.0.1 -t 60000 -p 8888';
-const moduleName = 'XXXXTgUser';
-const cache = require('@up/taf-dcache-srf')(proxyTarget, moduleName).toPromise();
-```
-
 ### Key (键)
 
   keys  
@@ -72,6 +66,10 @@ const cache = require('@up/taf-dcache-srf')(proxyTarget, moduleName).toPromise()
   sismember key member
 
 ```js
+const proxyTarget = 'DCache.XXXXProxyServer.ProxyObj@tcp -h 127.0.0.1 -t 60000 -p 8888';
+const moduleName = 'XXXXTgUser';
+const cache = require('@up/taf-dcache-srf')(proxyTarget, moduleName).toPromise();
+
 (async () => {
   const [ key, value ] = [ 'key', { key: 'value' } ];
   
@@ -198,15 +196,15 @@ const cache = require('@up/taf-dcache-srf')(proxyTarget, moduleName).toPromise()
 
 ### DCache Notes
 
-1. 单条记录大小存储不要超过 `2M`，记录太大影响性能，也可能导致db落地写入超时等；
+1. 单条记录大小存储不要超过 `2M`，记录太大影响性能，也可能导致 db 落地写入超时等；
 
 2. 批量读写，一次不要超过 `100条` Key；(`mget`, `mset`, `hgetall`)
 
-3. 数据记录Value为二进制时（比如`jce`序列化的结果）且落库选择的是序列化结果落地的情况下，落地库value字段要用 `blob` （最大`65K`）或者 `mediumblob`，不能用 `text` 或者 `mediumtext`; 在 `blob` 和 `mediumblob` 或者 `text`和 `mediumtext` 选择的时候， 如果记录大小确定小于小于`65K`， 那么可以选择 `blob` 或者 `text`， 否则选择 `mediumblob` 或 `mediumtext`；
+3. 数据记录 `value` 为二进制时（比如`jce`序列化的结果）且落库选择的是序列化结果落地的情况下，落地库value字段要用 `blob` （最大`65K`）或者 `mediumblob`，不能用 `text` 或者 `mediumtext`; 在 `blob` 和 `mediumblob` 或者 `text`和 `mediumtext` 选择的时候， 如果记录大小确定小于小于`65K`， 那么可以选择 `blob` 或者 `text`， 否则选择 `mediumblob` 或 `mediumtext`；
 
-4. DCache落地数据库：预计所有的数据记录条数，到不了`100w`条，1库10表；总记录条数不到1亿，10库10表；超过1亿：10库100表；
+4. DCache 落地数据库：预计所有的数据记录条数，到不了`100w`条，`1库10表`；总记录条数不到1亿，`10库10表`；超过1亿：`10库100表`；
 
-5. 部署券商环境的时候注意检查dcache的value类型，要midblob (不能为varchar)，dcache内存大小不能是1m的。
+5. 部署时注意检查 dcache 的 `value` 类型，要 `midblob` (不能为`varchar`)，dcache 内存大小不能是 `1m` 的。
 
 ### DCache Configuration Introduce
 

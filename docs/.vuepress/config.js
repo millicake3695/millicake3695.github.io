@@ -87,6 +87,7 @@ module.exports = {
         title: 'Back-End',
         collapsable: false,
         children: [
+          '/backend/ip',
           '/backend/redis',
           '/backend/sql',
         ]
