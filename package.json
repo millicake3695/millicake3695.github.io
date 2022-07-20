@@ -6,12 +6,12 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@vssue/api-github-v3": "^1.4.7",
+    "@vssue/vuepress-plugin-vssue": "^1.4.8",
     "vuepress": "^1.8.2"
   },
   "scripts": {
     "dev": "vuepress dev docs",
-    "release": "vuepress build docs",
-    "build": "node ./builds/addComponents.js && vuepress build docs && node ./builds/delComponents.js"
-
+    "build": "vuepress build docs"
   }
 }

@@ -4,7 +4,18 @@ module.exports = {
   title: 'Hello, Stranger',  // 设置网站标题
   description : 'millicake3695‘s blog',
   // evergreen: false, // 禁止 ESNext 到 ES5 的转译以及对 IE 的 polyfills，同时会带来更快的构建速度和更小的文件体积。
-  plugins: ['@vuepress/back-to-top'],
+  plugins: {
+    '@vuepress/back-to-top': true,
+    '@vssue/vuepress-plugin-vssue': {
+      platfrom: 'github',
+      locale: 'zh',
+      owner: 'millicake3695',
+      repo: 'millicake3695.github.io',
+      clientId: 'e24be0dd3988f5e29b31',
+      clientSecret: '5b19b1bb262c7e8e53f505947e2c040287ba1197',
+      autoCreateIssue: true
+    }
+  },
   head: [
     ['link', { rel: 'icon', href: '/logo.png' }], // favicon
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
@@ -94,6 +105,6 @@ module.exports = {
       },
     ],
     sidebarDepth: 2,
-    lastUpdated: 'last updated'
+    lastUpdated: '上次更新'
   }
 }

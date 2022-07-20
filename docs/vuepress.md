@@ -45,9 +45,14 @@
 
 4. 关于 `JamesIves/github-pages-deploy-action@releases/v3` 这个 action 中 FOLDER 的取值，为绝对路径。由于 vuepress 默认的打包文件路径为 `.vuepress/dist`，因此这里应该对应修改为 `docs/.vuepress/dist`。如果你在 vuepress 的配置文件中修改了默认打包路径（配置项为 `dest`，默认值为 `.vuepress/dist`），那么这里也需要对应修改。
 
+5. 评论功能使用的是`github`提供的`OAuth API`搭配评论插件`Vssue`，将评论存储在`github Issue`系统中，并在当前页面展示。  
+    依赖包：  
+    `@vssue/vuepress-plugin-vssue`  
+    `@vssue/api-github-v3`   
+
 ### 其它
 
 - [Emoji](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.json)
 
-- [Gitalk 博客评论](https://juejin.cn/post/6844903809823539207)
 
+<Vssue />
