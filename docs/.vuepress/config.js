@@ -4,6 +4,7 @@ module.exports = {
   title: 'Hello, Stranger',  // 设置网站标题
   description : 'millicake3695‘s blog',
   // evergreen: false, // 禁止 ESNext 到 ES5 的转译以及对 IE 的 polyfills，同时会带来更快的构建速度和更小的文件体积。
+  // plugins: ['@vuepress/back-to-top'],
   plugins: {
     '@vuepress/back-to-top': true,
     '@vssue/vuepress-plugin-vssue': {

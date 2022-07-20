@@ -48,7 +48,9 @@
 5. 评论功能使用的是`github`提供的`OAuth API`搭配评论插件`Vssue`，将评论存储在`github Issue`系统中，并在当前页面展示。  
     依赖包：  
     `@vssue/vuepress-plugin-vssue`  
-    `@vssue/api-github-v3`   
+    `@vssue/api-github-v3`  
+
+    [Vssue 使用指南](https://www.mianshigee.com/tutorial/vssue/77fe8c4f2948fd54.md) 
 
 ### 其它
 
