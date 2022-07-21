@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {margin:0;padding:0;box-sizing: border-box;}
+    body {padding: 10px;}
+    p::after {position: absolute;content:attr(title);text-emphasis: '\488';font-size:200%;letter-spacing: -0.5em;left:0.3em;-webkit-text-fill-color: transparent;}
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>今&#x488;天&#x488;真&#x488;是&#x488;热&#x488;化&#x488;了</h2>
+
+    <!-- 文本装饰的颜色默认继承自文字颜色 -->
+    <p title="今天真是热化了~" style="color: red;">今天真是热化了~</p>
+    <p title="今天真是热化了~" style="color: blueviolet;">今天真是热化了~</p>
+  </div>
+</body>
+</html>

@@ -50,11 +50,11 @@
     `@vssue/vuepress-plugin-vssue`  
     `@vssue/api-github-v3`  
 
-    [Vssue 使用指南](https://www.mianshigee.com/tutorial/vssue/77fe8c4f2948fd54.md) 
+    [Vssue 官网](https://vssue.js.org/zh/)
 
 ### 其它
 
 - [Emoji](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.json)
 
 
-<Vssue />
+<Vssue title="vuepress"/>
