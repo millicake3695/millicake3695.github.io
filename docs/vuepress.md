@@ -45,16 +45,32 @@
 
 4. 关于 `JamesIves/github-pages-deploy-action@releases/v3` 这个 action 中 FOLDER 的取值，为绝对路径。由于 vuepress 默认的打包文件路径为 `.vuepress/dist`，因此这里应该对应修改为 `docs/.vuepress/dist`。如果你在 vuepress 的配置文件中修改了默认打包路径（配置项为 `dest`，默认值为 `.vuepress/dist`），那么这里也需要对应修改。
 
-5. 评论功能使用的是`github`提供的`OAuth API`搭配评论插件`Vssue`，将评论存储在`github Issue`系统中，并在当前页面展示。  
+5. 评论功能使用的是`github`提供的`OAuth API`搭配评论插件`Vssue`，将评论存储在`github Issue`系统中，并在当前页面展示。 
+
+    :::details
+    因评论功能在github授权登录重定向至评论页面时，一直初始化失败，无赖放弃。
+
+    `https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token` 请求失败
+    :::
+
     依赖包：  
     `@vssue/vuepress-plugin-vssue`  
     `@vssue/api-github-v3`  
 
     [Vssue 官网](https://vssue.js.org/zh/)
 
+6. 使用 `vuepress-theme-reco` 主题自带的评论功能。
+
+  [vuepress-theme-reco](https://vuepress-reco-doc.vercel.app/)
+
+
 ### 其它
 
 - [Emoji](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.json)
 
+<!-- <Vssue title="vuepress"/> -->
 
-<Vssue title="vuepress"/>
+<!-- <comm-header /> -->
+<!-- <comm-button /> -->
+
+<!-- <el-button type="warning" size="medium">这是警告</el-button> -->

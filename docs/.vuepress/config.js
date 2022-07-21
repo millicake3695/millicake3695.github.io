@@ -1,10 +1,17 @@
+const path = require('path');
+
 module.exports = {
   base: '/', // 必须 静态资源访问
   cache: false, // 每次构建前删除cache
   title: 'Hello, Stranger',  // 设置网站标题
   description : 'millicake3695‘s blog',
-  // evergreen: false, // 禁止 ESNext 到 ES5 的转译以及对 IE 的 polyfills，同时会带来更快的构建速度和更小的文件体积。
-  // plugins: ['@vuepress/back-to-top'],
+  configureWebpack: {
+    resolve: {
+      alias: {
+        '@src': path.resolve(__dirname, '../src/')
+      }
+    }
+  },
   plugins: {
     '@vuepress/back-to-top': true,
     '@vssue/vuepress-plugin-vssue': {
