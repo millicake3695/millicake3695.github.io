@@ -1,6 +1,6 @@
 ---
 home: true
-# heroImage: /logo.png
+heroImage: /logo.png
 # heroText: magic box
 tagline: Do it now!
 actionText: 快速上手 →
@@ -10,6 +10,6 @@ description: millicake3695's blog
 footer: All rights reserved.
 ---
 
-::: slot footer
+<!-- ::: slot footer
 Make a Even Better Life
-:::
+::: -->
