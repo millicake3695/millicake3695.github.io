@@ -12,9 +12,9 @@ module.exports = {
       locale: 'zh',
       owner: 'millicake3695',
       repo: 'millicake3695.github.io',
-      clientId: 'e24be0dd3988f5e29b31',
-      clientSecret: '5b19b1bb262c7e8e53f505947e2c040287ba1197',
-      autoCreateIssue: true
+      clientId: 'e00252d5872eb949b5b5',
+      clientSecret: '6cbfa5c519e3d6f2b568109557b339710fcfbf47',
+      autoCreateIssue: false
     }
   },
   head: [

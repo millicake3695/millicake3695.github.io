@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /logo.png
+# heroImage: /logo.png
 # heroText: magic box
 tagline: Do it now!
 actionText: 快速上手 →
