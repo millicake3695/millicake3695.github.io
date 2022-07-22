@@ -1,4 +1,15 @@
-### 敏感词校验
+---
+title: 敏感词校验
+date: 2020-06-16
+categories:
+ - frontEnd
+tags:
+ - JS
+---
+
+<!-- more -->
+
+
 
 ```js
 /**

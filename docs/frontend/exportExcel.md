@@ -1,4 +1,15 @@
-### 导出表格数据为 excel 文件
+---
+title: 数据导出为 excel 文件
+date: 2021-06-17
+categories:
+ - frontEnd
+---
+
+:::tip
+分别介绍了前台导出和后台导出的方法。
+:::
+
+<!-- more -->
 
 #### 1. node.js 后端导出 (前端使用a标签)
 

@@ -1,4 +1,15 @@
-## 名词解释
+---
+title: JS名词解释
+date: 2020-03-12
+categories:
+ - frontEnd
+tags:
+ - JS
+---
+
+<!-- more -->
+
+
 
 ### 闭包
 

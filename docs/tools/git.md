@@ -1,4 +1,16 @@
-## Git command
+---
+title: Git基础
+date: 2021-08-24
+categories:
+ - Tools
+tags:
+ - Git
+---
+
+<!-- more -->
+
+
+### Git command
 
 [Github Docs](https://docs.github.com/en/github)
 
@@ -11,7 +23,7 @@
 
   mac 终端下 git 集成在 xcode 下，但是 xcode 非常大，可通过以下命令只安装 git。
 
-  ```shell
+  ```bash
   xcode-select install
   git init
   ```
@@ -34,18 +46,18 @@
 
   将原地址（注意修改npm镜像 nrm use cnpm / taobao）
 
-  ```shell
+  ```bash
   git clone https://github.com/lodash/lodash.git
   ```
 
   改为
 
-  ```shell
+  ```bash
   git clone https://github.com.cnpmjs.org/lodash/lodash.git
   ```
 
   ### 刷新DNS缓存
-  ```shell
+  ```bash
   // Mac用户
   sudo killall -HUP mDNSResponder
 
@@ -55,7 +67,7 @@
 
 ### 设置ssh
 
-  ```shell
+  ```bash
   $ ssh-keygen -t rsa -C "youremail@example.com"
   entry password
   ...

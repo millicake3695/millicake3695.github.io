@@ -1,4 +1,15 @@
-### axios
+---
+title: axios介绍
+date: 2021-08-24
+categories:
+ - Tools
+tags:
+ - axios
+---
+
+<!-- more -->
+
+
 
 [官方文档](http://www.axios-js.com/zh-cn/docs/)
 
@@ -95,34 +106,34 @@
 
 ### 在 chrome console 控制台直接发起一个 axios POST 请求
 
-```js
-var sc = document.createElement('script');
-sc.src = 'https://unpkg.com/axios/dist/axios.min.js';
-document.body.append(sc);
+    ```js
+    var sc = document.createElement('script');
+    sc.src = 'https://unpkg.com/axios/dist/axios.min.js';
+    document.body.append(sc);
 
-axios.get('/api/getsomething');
-```
+    axios.get('/api/getsomething');
+    ```
 
 ### axios 发起 https 请求异常，http 请求正常
 
-在 node.js 中台服务中使用 axios 发起 https 请求异常（错误提示不明显），发起 http 请求正常；
+  在 node.js 中台服务中使用 axios 发起 https 请求异常（错误提示不明显），发起 http 请求正常；
 
-使用 request-promise 发起 https 请求报错：`name=RequestError, message=Error: unable to verify the first certificate, code=UNABLE_TO_VERIFY_LEAF_SIGNATURE`。字面意思错误原因可能是证书校验失败。
+  使用 request-promise 发起 https 请求报错：`name=RequestError, message=Error: unable to verify the first certificate, code=UNABLE_TO_VERIFY_LEAF_SIGNATURE`。字面意思错误原因可能是证书校验失败。
 
-后经排查，确认最近在更换生产域名，导致有一部分的ssl证书对应的主机名改成了另一个域名(aaa.com)，而程序中在用的域名还是 bbb.com，因此对代码里的 https 请求关闭 ssl 校验。对应的配置为：
+  后经排查，确认最近在更换生产域名，导致有一部分的ssl证书对应的主机名改成了另一个域名(aaa.com)，而程序中在用的域名还是 bbb.com，因此对代码里的 https 请求关闭 ssl 校验。对应的配置为：
 
-```js{9}
-// node.js
-import axios from 'axios';
-import https from 'https';
+    ```js{9}
+    // node.js
+    import axios from 'axios';
+    import https from 'https';
 
-axios({
-  method: 'post',
-  url: 'https://xxx.xxx.com/api/xxx',
-  headers: {},
-  httpsAgent: new https.Agent({ rejectUnauthorized: false }), // 忽略 SSL 校验
-  data: {}
-});
-```
+    axios({
+      method: 'post',
+      url: 'https://xxx.xxx.com/api/xxx',
+      headers: {},
+      httpsAgent: new https.Agent({ rejectUnauthorized: false }), // 忽略 SSL 校验
+      data: {}
+    });
+    ```
 
 

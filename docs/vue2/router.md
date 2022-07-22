@@ -1,4 +1,13 @@
-## Vue-Router
+---
+title: Vue-Router
+date: 2019-08-24
+categories:
+ - Vue2
+---
+
+<!-- more -->
+
+
 
 ### 完整的导航解析流程
 

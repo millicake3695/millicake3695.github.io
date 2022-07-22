@@ -1,4 +1,15 @@
-### 移动端兼容
+---
+title: 移动端兼容汇总
+date: 2021-06-17
+categories:
+ - frontEnd
+tags:
+ - mobile
+---
+
+<!-- more -->
+
+
 
 1. `css: font-weight: 100 - 900 / lighter / normal / bold / bolder`  
     ios: 表现正常  

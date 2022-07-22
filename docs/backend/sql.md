@@ -1,8 +1,25 @@
-### MYSQL GUI Tools
+---
+title: Mysql
+date: 2022-07-19
+categories:
+ - backend
+tags:
+ - mysql
+---
 
-**Mac OS X**: [sequelpro](http://www.sequelpro.com/)
+<!-- 这里是文章摘要 -->
 
-**Windows**: [heidi](https://www.heidisql.com/)
+:::tip
+简单介绍了 mysql 的基本操作及一些基本概念。
+:::
+
+<!-- more -->
+
+### GUI Tools
+
+Mac OS X: [sequelpro](http://www.sequelpro.com/)
+
+Windows: [heidi](https://www.heidisql.com/)
 
 
 ### 数据库分类

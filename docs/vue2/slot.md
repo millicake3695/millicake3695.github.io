@@ -1,4 +1,13 @@
-### Slot 插槽
+---
+title: Slot 插槽
+date: 2019-08-24
+categories:
+ - Vue2
+---
+
+<!-- more -->
+
+
 
 v2.6.0开始，Vue 引入了 v-slot 指令取代了 slot 和 slot-scope 这两个已被废弃的 attribute，以此统一具名插槽和作用域插槽。
 

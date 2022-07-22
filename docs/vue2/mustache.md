@@ -1,6 +1,15 @@
-### Mustache 模板语法
+---
+title: Mustache 模板语法
+date: 2019-08-24
+categories:
+ - Vue2
+---
 
-是一个logic-less（轻逻辑）模板解析引擎，它原本是基于 javascript 实现的，但是因为轻量易用，所以经过拓展目前支持更多的平台，如 java，.NET，PHP，C++ 等。
+<!-- more -->
+
+
+
+`Mustache` 是一个logic-less（轻逻辑）模板解析引擎，它原本是基于 javascript 实现的，但是因为轻量易用，所以经过拓展目前支持更多的平台，如 java，.NET，PHP，C++ 等。
 
 它是为了使用户界面与业务数据（内容）分离而产生的，
 

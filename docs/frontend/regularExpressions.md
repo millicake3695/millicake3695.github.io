@@ -1,4 +1,16 @@
-## 正则表达式
+---
+title: 正则表达式
+date: 2020-06-16
+categories:
+ - frontEnd
+tags:
+ - JS
+ - RegExp
+---
+
+<!-- more -->
+
+
 
   [Regular Expressions](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions)
 
@@ -10,7 +22,7 @@
 
   ⚠️ 此处特殊字符的含义仅列举部分。
 
-  字符       |含义
+  <div style="width:100px">字符</div>       |含义
   --|:--
   `^`       |匹配输入的开始
   `$`       |匹配输入的结束

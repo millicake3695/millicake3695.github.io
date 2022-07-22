@@ -1,6 +1,15 @@
-### 常见的基本问题
+---
+title: 基本问题
+date: 2019-08-24
+categories:
+ - Vue2
+---
 
-1. 为什么在 HTML 中监听事件？
+<!-- more -->
+
+
+
+### 为什么在 HTML 中监听事件？
 
     你可能注意到这种事件监听的方式违背了关注点分离 (separation of concern) 这个长期以来的优良传统。但不必担心，因为所有的 Vue.js 事件处理方法和表达式都严格绑定在当前视图的 ViewModel 上，它不会导致任何维护上的困难。实际上，使用 `v-on` 有几个好处：
 
@@ -12,7 +21,7 @@
 
 
 
-2. Vue data为什么是一个函数？
+### Vue data为什么是一个函数？
   
     因为组件是用来复用的，且JS对象是引用关系。如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响。
 
@@ -22,7 +31,7 @@
 
 
 
-3. Vue单文件组件模板为什么只能有一个根元素
+### Vue单文件组件模板为什么只能有一个根元素
 
     先认识一下 `template`
 
@@ -34,7 +43,7 @@
 
 
 
-4. Scoped Style
+### Scoped Style
 
     vue中的scoped属性的效果主要通过PostCSS转译实现。
 
@@ -44,12 +53,12 @@
 
 
 
-5. 依赖注入 (provide & inject)
+### 依赖注入 (provide & inject)
 
-    用途：在任意后代子孙组件中访问顶层父组件的方法或属性，`但是所提供的 property 是非响应式的`。可以把依赖注入看作一部分“大范围有效的 prop”，除了：
+  用途：在任意后代子孙组件中访问顶层父组件的方法或属性，`但是所提供的 property 是非响应式的`。可以把依赖注入看作一部分“大范围有效的 prop”，除了：
 
-      - 祖先组件不需要知道哪些后代组件使用它提供的 property
-      - 后代组件不需要知道被注入的 property 来自哪里
+    - 祖先组件不需要知道哪些后代组件使用它提供的 property
+    - 后代组件不需要知道被注入的 property 来自哪里
     
     ```js
     // 父组件
@@ -73,9 +82,7 @@
     }
     ```
 
-
-
-6. keepAlive 动态组件缓存
+### keepAlive 动态组件缓存
 
     ```html
     <template>
@@ -99,40 +106,40 @@
 
 
 
-7. Vue EventBus
+### Vue EventBus
 
     ```js
-      class Bus {
-        constructor () {
-          super(); // 调用父类的constructor方法
-          this.callbacks = {};
-        },
-        $on (name, fn) {
-          this.callbacks[name] = this.callbacks[name] || [];
-          this.callbacks[name].push(fn);
-        },
-        $emit (name, args) {
-          this.callbacks[name] && this.callbacks[name].forEach(cb => cb(args));
-        },
-        $off (name) {
-          this.callbacks[name] = [];
-        }
+    class Bus {
+      constructor () {
+        super(); // 调用父类的constructor方法
+        this.callbacks = {};
+      },
+      $on (name, fn) {
+        this.callbacks[name] = this.callbacks[name] || [];
+        this.callbacks[name].push(fn);
+      },
+      $emit (name, args) {
+        this.callbacks[name] && this.callbacks[name].forEach(cb => cb(args));
+      },
+      $off (name) {
+        this.callbacks[name] = [];
       }
-      // typeof Bus === 'function'
+    }
+    // typeof Bus === 'function'
 
-      // main.js
-      // Vue.prototype.$EventBus = new Bus();
-      // this.$EventBus.$on('foo', cb);
-      // this.$EventBus.$emit('foo', {});
+    // main.js
+    // Vue.prototype.$EventBus = new Bus();
+    // this.$EventBus.$on('foo', cb);
+    // this.$EventBus.$emit('foo', {});
     ```
 
+### [程序化的事件侦听器](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
+  `$on(eventName, eventHandler)` 侦听一个事件
 
-8. [程序化的事件侦听器](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
+  `$once(eventName, eventHandler)` 一次性侦听一个事件
 
-    - $on(eventName, eventHandler) 侦听一个事件
-    - $once(eventName, eventHandler) 一次性侦听一个事件
-    - $off(eventName, eventHandler) 停止侦听一个事件
+  `$off(eventName, eventHandler)` 停止侦听一个事件
 
     v-on 侦听 $emit
 
@@ -153,7 +160,7 @@
     }
     ```
 
-99. Pieces
+### Pieces
   
     (1) `this.$data`获取组件当前data；`this.$options.data()`获取组件初始化时的data。
 
