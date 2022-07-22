@@ -78,6 +78,24 @@ tags:
 
     [Valine](https://valine.js.org/)
 
+7. 自动构建发布报错
+
+  ```bash
+  > ***.github.io@1.0.0 build
+  > vuepress build docs
+  /home/runner/work/***.github.io/***.github.io/node_modules/vue-server-renderer/index.js:8
+    throw new Error(
+    ^
+  Error: 
+  Vue packages version mismatch:
+  - vue@2.7.8
+  - vue-server-renderer@2.7.4
+  This may cause things to work incorrectly. Make sure to use the same version for both.
+  ```
+
+  解决方案：delete lock file and node_modules foler, and then run `yarn`
+
+  [related issue](https://github.com/nuxt/nuxt.js/issues/6823)
 
 ### 其它
 
