@@ -36,7 +36,7 @@ module.exports = {
     lineNumbers: true // 使代码块显示行数标记
   },
   themeConfig : {
-    logo: 'logo.png',
+    logo: '/logo.png',
     author: '有药',
     authorAvatar: '/logo.png',
     type: 'blog',
