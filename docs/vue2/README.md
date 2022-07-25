@@ -1,6 +1,5 @@
 ---
 title: 基本问题
-date: 2019-08-24
 categories:
  - Vue2
 ---

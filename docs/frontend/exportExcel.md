@@ -1,6 +1,5 @@
 ---
 title: 数据导出为 excel 文件
-date: 2021-06-17
 categories:
  - frontEnd
 ---

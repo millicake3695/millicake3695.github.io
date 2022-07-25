@@ -1,6 +1,5 @@
 ---
 title: 敏感词校验
-date: 2020-06-16
 categories:
  - frontEnd
 tags:

@@ -1,6 +1,5 @@
 ---
 title: Redis API
-date: 2022-07-17
 categories:
  - backend
 tags:

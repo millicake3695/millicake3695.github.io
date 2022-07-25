@@ -1,6 +1,5 @@
 ---
 title: Slot 插槽
-date: 2019-08-24
 categories:
  - Vue2
 ---

@@ -1,4 +1,10 @@
-### 安装vue-cli@3.x.x
+---
+title: 安装vue-cli@3.x.x
+categories:
+ - Vue3
+---
+
+<!-- more -->
 
 首先全局卸载vue@2.x，然后全局安装@vue-cli@3.x
 

@@ -1,6 +1,5 @@
 ---
 title: Mustache 模板语法
-date: 2019-08-24
 categories:
  - Vue2
 ---

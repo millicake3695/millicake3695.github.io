@@ -14,6 +14,14 @@ module.exports = {
     }
   },
   plugins: {
+    '@vuepress/last-updated': {
+      transformer: (timestamp, lang) => {
+        // 不要忘了安装 moment
+        const dayjs = require('dayjs');
+        // moment.locale(lang)
+        return dayjs(timestamp).format('YYYY-MM-DD HH:mm');
+      }
+    },
     // '@vuepress/back-to-top': true, // 主题插件自带此功能
     // '@vssue/vuepress-plugin-vssue': { // @vssue/vuepress-plugin-vssue
     //   platfrom: 'github', // 对应 @vssue/api-github-v3
@@ -97,6 +105,7 @@ module.exports = {
     //     children: [
     //       '/tools/git'
     //       '/tools/axios',
+    //       '/tools/webpack',
     //     ]
     //   },
     //   {
@@ -106,11 +115,10 @@ module.exports = {
     //       '/frontend/noun',
     //       '/frontend/css',
     //       '/frontend/mobile',
-    //       'frontend/exportExcel',
-    //       'frontend/regularExpressions',
-    //       'frontend/sensitiveword',
-    //       'frontend/h5scroll',
-    //       'frontend/webpack',
+    //       '/frontend/exportExcel',
+    //       '/frontend/regularExpressions',
+    //       '/frontend/sensitiveword',
+    //       '/frontend/h5scroll',
     //     ]
     //   },
     //   {
@@ -123,7 +131,7 @@ module.exports = {
     //       '/vue2/mustache',
     //       '/vue2/router',
     //       '/vue2/slot'
-    //     ] // 绝对路径
+    //     ]
     //   },
     //   {
     //     title: 'Vue3',

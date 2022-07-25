@@ -1,6 +1,5 @@
 ---
 title: Mysql
-date: 2022-07-19
 categories:
  - backend
 tags:

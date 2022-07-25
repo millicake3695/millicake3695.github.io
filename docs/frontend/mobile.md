@@ -1,6 +1,5 @@
 ---
 title: 移动端兼容汇总
-date: 2021-06-17
 categories:
  - frontEnd
 tags:
