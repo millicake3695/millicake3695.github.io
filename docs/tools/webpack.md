@@ -18,7 +18,7 @@ webpack 5 运行于 Node.js v10.13.0+ 的版本。
 
 webpack 遵循 CommonJS 模块规范。
 
-如果不生成配置文件，webpack会按照默认配置去打包(> v4.0.0)，默认配置文件名为 `webpack.config.js` ，也可以自定义修改：
+如果不生成配置文件，webpack会按照默认配置去打包(> v4.0.0)，默认配置文件名为 `webpack.config.js` ，也可以自定义修改(`--config`)：
 
 ```bash
 # 建议根据项目安装而不是全局安装
@@ -26,6 +26,7 @@ webpack 遵循 CommonJS 模块规范。
 yarn add webpack webpack-cli webpack-dev-server -D
 
 # 自定义配置并且修改默认配置名字
+# 需要 npm v5.2.0+
 npx webpack --config my-webpack-config.js
 ```
 
@@ -51,7 +52,9 @@ npx webpack --config my-webpack-config.js
 2. “webpack 配置的可扩展” 是指，这些配置可以重复使用，并且可以与其他配置组合使用。这是一种流行的技术，用于将关注点从环境(environment)、构建目标(build target)、运行时(runtime)中分离。然后使用专门的工具（如 webpack-merge）将它们合并起来。  
 :::
 
-  * 常见场景
+<br/>
+
+  **常见场景**
 
   (1) **分离 app(应用程序) 和 vendor(第三方库) 入口**
   ```js
@@ -82,7 +85,7 @@ npx webpack --config my-webpack-config.js
   };
   ```
 
-  :::tip
+  :::warning
   在 `webpack < 4` 的版本中，通常将 vendor 作为一个单独的入口起点添加到 entry 选项中，以将其编译为一个单独的文件（与 `CommonsChunkPlugin` 结合使用，见下文）。
 
   而在 `webpack 4` 中不鼓励这样做。而是使用 `optimization.splitChunks` 选项，将 vendor 和 app(应用程序) 模块分开，并为其创建一个单独的文件。不要为 vendor 或其他不是执行起点创建 entry。
@@ -115,13 +118,18 @@ npx webpack --config my-webpack-config.js
   }
   ```
 
-  webpack 4 最大的改动就是废除了 `CommonsChunkPlugin` 引入了 `optimization.splitChunks`。mode 是 `production` 时 webpack4 会自动开启 Code Splitting。
+  webpack 4 最大的改动就是废除了 `CommonsChunkPlugin` 引入了 `optimization.splitChunks`。mode 是 `production` 时 webpack4 会自动开启 [Code Splitting](https://webpack.docschina.org/guides/code-splitting/)。
 
   它内置的代码分割策略是这样的：  
   1. 新的 chunk 是否被共享或者是来自 node_modules 的模块；  
   2. 新的 chunk 体积在压缩之前是否大于 30kb；  
   3. 按需加载 chunk 的并发请求数量小于等于 5 个；  
   4. 页面初始加载时的并发请求数量小于等于 3 个；  
+
+  :::warning
+  尽管可以在 webpack 中允许每个页面使用多入口，仍应尽可能避免使用多入口的入口。推荐如下写法，如此在使用 async 脚本标签时，会有更好的优化以及一致的执行顺序。
+  `entry: { app: ["babel-polyfill", "./src/main.js"] }`
+  :::
 
   (2) **多页面应用程序**
 
@@ -282,7 +290,11 @@ webpack 插件是一个具有 `apply` 方法的 JavaScript 对象。`apply` 方�
     **最佳实践**
 
     1. develop：cheap-module-eval-source-map，提示比较全，打包速度快
-    2. production：cheap-module-source-map，提示更全面，打包稍微慢
+    2. production：~~cheap-module-source-map，提示更全面，打包稍微慢~~，[禁用](https://webpack.docschina.org/guides/build-performance/#source-maps)
+
+    :::warning
+    避免在生产中使用 `inline-***` 和 `eval-***`，因为它们会增加 bundle 体积大小，并降低整体性能。
+    :::
 
 ---
 
@@ -335,6 +347,35 @@ module.exports = {
   ], 
 };
 ```
+
+<br/>
+
+## 延伸阅读
+
+* [使用 &lt;link rel="preload" /&gt; 预加载内容](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload)
+  ```html
+  <link rel="preload" href="style.css" as="style">
+  <link rel="preload" href="main.js" as="script">
+  ```
+
+  Using as to specify the type of content to be preloaded allows the browser to:
+
+  - Prioritize resource loading more accurately.
+  - Store in the cache for future requests, reusing the resource if appropriate.
+  - Apply the correct content security policy to the resource.
+  - Set the correct Accept request headers for it.
+
+* [创建并发布一个 library](https://webpack.docschina.org/guides/author-libraries/)
+
+* [进程间通讯(IPC, inter process communication)]()
+
+* [Dynamic Imports in Vue.js for better performance](https://vuedose.tips/dynamic-imports-in-vue-js-for-better-performance)
+
+<br/>
+
+:::tip
+1.  webpack 在入口 chunk 中，包含了某些 boilerplate(引导模板)，特别是 runtime 和 manifest，这样就导致即使未改动任何内容，主输出文件 contenthash 也不一致。webpack 提供了一个优化功能，可使用 optimization.runtimeChunk 选项将 runtime 代码拆分为一个单独的 chunk。将其设置为 single 来为所有 chunk 创建一个 runtime bundle。
+:::
 
 
 
