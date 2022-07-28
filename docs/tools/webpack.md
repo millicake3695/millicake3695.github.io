@@ -350,6 +350,14 @@ module.exports = {
 
 <br/>
 
+
+## [术语表](https://webpack.docschina.org/glossary/)
+
+<br />
+
+
+## [命令行接口（CLI）](https://webpack.docschina.org/api/cli/a)
+
 ## 延伸阅读
 
 * [使用 &lt;link rel="preload" /&gt; 预加载内容](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload)
