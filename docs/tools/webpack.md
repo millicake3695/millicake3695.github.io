@@ -222,7 +222,7 @@ module.exports = {
 
 ### [loader](https://webpack.docschina.org/loaders/)
 
-loader 用于对模块的源代码进行转换，类似于其他构建工具中“任务(task)”。loader 让初始只能理解 JavaScript 和 JSON 文件的 webpack 能够去处理其他类型的文件，并将它们转换为有效模块以供应用程序使用，以及被添加到依赖图中。
+loader <span class="red">本质就是一个函数</span>，用于对模块的源代码进行转换，类似于其他构建工具中“任务(task)”。loader 让初始只能理解 JavaScript 和 JSON 文件的 webpack 能够去处理其他类型的文件，并将它们转换为有效模块以供应用程序使用，以及被添加到依赖图中。
 
 
 在 webpack 的配置中，loader 有两个属性：
@@ -259,6 +259,21 @@ loader 用于对模块的源代码进行转换，类似于其他构建工具中�
 
 通过 loader 的预处理函数，可以更加灵活地引入诸如压缩、打包、语言转译（或编译）等细粒度逻辑。
 
+
+**常用loader**
+
+* `raw-loader` : 加载文件原始内容(utf8)
+* `file-loader` : 把文件输出到一个文件夹中，在代码中使用相对路径引用输出的文件（处理图片和字体）
+* `url-loader` : 与 file-loader 类似，区别是可以设置一个阈值，大于阈值时交给 file-loader 处理，小于阈值时返回文件 base64 形式编码（处理图片和字体）
+* `image-loader` : 加载并压缩图片文件
+* `babel-loader` : 把 ES6 转换成 ES5
+* `less-loader` : 把 LESS 代码转换成 CSS
+* `css-loader` :  加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码，支持模块化、压缩、文件导入等特性
+* `style-loader` : 把 CSS 代码注入到 JS 中，通过 DOM 操作加载 CSS（放在 head 标签下的 style 标签）
+* `postcss-loader` : 扩展 CSS 语法，使用下一代 CSS，可以配合 autoprefixer 插件自动补齐 CSS3 前缀，配合 postcss-px-to-viewport 插件转换 px 为 vw
+* `eslint-loader` : 通过 ESlint 检查 JS 代码
+* `vue-loader` : 加载并编译 Vue.js 单文件组件
+
 ---
 
 
@@ -270,6 +285,10 @@ loader 用于对模块的源代码进行转换，类似于其他构建工具中�
 想要使用一个插件，只需要 `require()` 然后把它添加到 `plugins` 数组中。多数插件可以通过选项(option)自定义。你也可以在一个配置文件中因为不同目的而多次使用同一个插件，这时需要通过使用 `new` 操作符来创建一个插件实例。
 
 webpack 插件是一个具有 `apply` 方法的 JavaScript 对象。`apply` 方法会被 webpack compiler 调用，并且在 整个编译生命周期都可以访问 compiler 对象。
+
+:::tip
+plugin 基于事件流框架 `Tapable`，可以扩展 Webpack 的功能，在 Webpack 运行的生命周期中会广播出许多事件， plugin 可以监听这些事件，在合适的时机通过 Webpack 提供的 API 改变输出结果。
+:::
 
 * html-webpack-plugin: 打包后自动生成一个 html 文件，并把打包生成的 js 自动引入。
 
@@ -333,7 +352,7 @@ module.exports = {
   output: {
     publicPath: 'http://cdn.com.cn',
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contenthash].js',
+    filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[contenthash].chunk.js',
   },
   mode: 'production',
@@ -350,52 +369,111 @@ module.exports = {
 
 <br/>
 
+## webpack 编译生命周期
+
+1. 初始化参数
+
+    从配置文件和 shell 语句中读取与合并参数，得到最终的参数
+
+2. 开始编译
+
+    初始化 compiler 对象，加载 plugin，执行对象的 run 方法
+
+3. 确定入口
+
+    依据 entry 找到所有入口文件
+
+4. 编译模块
+
+    从入口文件出发，递归调用 loader 对目标模块以及该模块依赖的模块进行解析，得到每个模块被编译后的最终内容以及它们之间的依赖关系
+
+5. 输出资源
+
+    根据入口和模块间的依赖关系，组装 chunk 后转换为单独的文件加入到输出列表。\[压缩\]
+
+6. 输出完成
+
+    将待输出的文件内容写入到 output 目标路径
+
+## 文件指纹 (substitutions)
+
+1. hash：和整个项目的构建相关，只要项目文件有修改，hash 值就会更改。
+
+  (IMG)设置 file-loader 的 name，使用 hash。
+
+2. chunkhash：和 Webpack 打包的 chunk 有关，不同的入口会生成不同的 chunkhash。
+
+  (JS)用于设置 output 的 filename。
+
+3. contenthash：根据文件内容来定义的 hash，内容不变，则 contenthash 不变。
+
+  (CSS)设置 MiniCssExtractPlugin 的 filename，使用 contenthash。
+
+  (JS)设置 output 的 chunkFilename。
+
+## webpack --watch
+
+原理：轮询判断文件的最后编辑时间是否变化，如果某个文件发生了变化，并不会立刻告诉监听者，而是先缓存起来，等 aggregateTimeout 后再执行。
+
+缺点：每次需要手动刷新浏览器。
+
+```js
+module.export = {
+  watch: true, // 默认不开启
+  // 只有开启监听模式时，watchOptions才有意义
+  watchOptions: {
+    ignored: /node_modules/, // 不监听的文件或者文件夹，支持正则匹配，默认为空
+    aggregateTimeout: 300, // 监听到变化后的等待时间，默认300ms
+    poll: 1000, // 轮询频率，默认每秒1000次
+  }
+}
+```
 
 ## [常用术语](https://webpack.docschina.org/glossary/)
 
-  1. [Asset](https://webpack.docschina.org/guides/asset-management/): 资源是对图像、字体、媒体和任何其他类型文件的统称，通常用于网站和其他应用程序中。这些文件通常在 output 中最终输出为单独的文件，但也可以通过诸如 style-loader 或 url-loader 之类的方法内联。
+1. [Asset](https://webpack.docschina.org/guides/asset-management/): 资源是对图像、字体、媒体和任何其他类型文件的统称，通常用于网站和其他应用程序中。这些文件通常在 output 中最终输出为单独的文件，但也可以通过诸如 style-loader 或 url-loader 之类的方法内联。
 
-  2. **Bundle**: bundle 由许多不同的模块生成，包含已经经过加载和编译过程的源文件的最终版本。
+2. **Bundle**: bundle 由许多不同的模块生成，包含已经经过加载和编译过程的源文件的最终版本。
 
-  3. **Bundle Splitting**: 这个过程提供了一种优化构建的方法，允许 webpack 为单个应用程序生成多个 bundle 文件。因此，可以将每个 bundle 文件与影响其他文件的更改进行分离，从而减少重新发布并由此被客户端重新下载的代码量，并且运用浏览器缓存。
+3. **Bundle Splitting**: 这个过程提供了一种优化构建的方法，允许 webpack 为单个应用程序生成多个 bundle 文件。因此，可以将每个 bundle 文件与影响其他文件的更改进行分离，从而减少重新发布并由此被客户端重新下载的代码量，并且运用浏览器缓存。
 
-  4. **Chunk**: 此 webpack 特定术语在内部用于管理捆绑过程。输出束（bundle）由块组成，其中有几种类型（例如 entry 和 child ）。通常，块 直接与 输出束 (bundle）相对应，但是，有些配置不会产生一对一的关系。
+4. **Chunk**: 此 webpack 特定术语在内部用于管理捆绑过程。输出束（bundle）由块组成，其中有几种类型（例如 entry 和 child ）。通常，块 直接与 输出束 (bundle）相对应，但是，有些配置不会产生一对一的关系。
 
-  5. [Code Splitting](https://webpack.docschina.org/guides/code-splitting/): 代码分离指将代码分成不同的包/块，然后可以按需加载，而不是加载包含所有内容的单个包。
+5. [Code Splitting](https://webpack.docschina.org/guides/code-splitting/): 代码分离指将代码分成不同的包/块，然后可以按需加载，而不是加载包含所有内容的单个包。
 
-  6. **Configuration**: webpack 的配置文件是导出一个对象的 JavaScript 文件。 webpack 根据配置对象定义的属性进行解析。
+6. **Configuration**: webpack 的配置文件是导出一个对象的 JavaScript 文件。 webpack 根据配置对象定义的属性进行解析。
 
-  7. **Dependency Graph**: 任何时候，一个文件依赖于另一个文件，webpack 就把此视为文件之间有 依赖关系 。从这些入口起点开始，webpack 递归地构建一个依赖图，这个依赖图包含着应用程序所需的每个模块。
+7. **Dependency Graph**: 任何时候，一个文件依赖于另一个文件，webpack 就把此视为文件之间有 依赖关系 。从这些入口起点开始，webpack 递归地构建一个依赖图，这个依赖图包含着应用程序所需的每个模块。
 
-  8. **Entry Point**: 入口起点告诉 webpack 从哪里开始，并遵循着依赖图知道要打包哪些文件。您可以将应用程序的入口起点视为要捆绑的内容的 根上下文。
+8. **Entry Point**: 入口起点告诉 webpack 从哪里开始，并遵循着依赖图知道要打包哪些文件。您可以将应用程序的入口起点视为要捆绑的内容的 根上下文。
 
-  9. [Hot Module Replacement](https://webpack.docschina.org/concepts/hot-module-replacement) (HMR)：模块热替换功能会在应用程序运行过程中替换、添加或删除 模块，而无需重新加载整个页面。
+9. [Hot Module Replacement](https://webpack.docschina.org/concepts/hot-module-replacement) (HMR)：模块热替换功能会在应用程序运行过程中替换、添加或删除 模块，而无需重新加载整个页面。
 
-  10. **Loaders**: loader 用于对模块的源代码进行转换。loader 可以使你在 require() 或"加载"模块时预处理文件。类似于一个 “task-runner”。
+10. **Loaders**: loader 用于对模块的源代码进行转换。loader 可以使你在 require() 或"加载"模块时预处理文件。类似于一个 “task-runner”。
 
-  11. [Lazy Loading](https://webpack.docschina.org/guides/lazy-loading): 对应用程序的部分（块）进行懒加载的过程。换句话说，只有我们在真正需要它们的时候才进行加载。
+11. [Lazy Loading](https://webpack.docschina.org/guides/lazy-loading): 对应用程序的部分（块）进行懒加载的过程。换句话说，只有我们在真正需要它们的时候才进行加载。
 
-  12. **Module**: Module 是离散功能块，相比于完整程序提供了更小的接触面。精心编写的模块提供了可靠的抽象和封装界限，使得应用程序中每个模块都具有条理清楚的设计和明确的目的。
+12. **Module**: Module 是离散功能块，相比于完整程序提供了更小的接触面。精心编写的模块提供了可靠的抽象和封装界限，使得应用程序中每个模块都具有条理清楚的设计和明确的目的。
 
-  13. [Module Resolution](https://webpack.docschina.org/concepts/module-resolution/)：一个模块可以作为另一个模块的依赖模块。resolver 是一个库(library)，用于帮助找到模块的绝对路径，并在 resolve.modules 中指定的所有目录中搜索该模块。
+13. [Module Resolution](https://webpack.docschina.org/concepts/module-resolution/)：一个模块可以作为另一个模块的依赖模块。resolver 是一个库(library)，用于帮助找到模块的绝对路径，并在 resolve.modules 中指定的所有目录中搜索该模块。
 
-  14. [Manifest](https://webpack.docschina.org/concepts/manifest): 当完成打包并发送到浏览器时，会在运行时通过 Manifest 来解析和加载模块。
+14. [Manifest](https://webpack.docschina.org/concepts/manifest): 当完成打包并发送到浏览器时，会在运行时通过 Manifest 来解析和加载模块。
 
-  15. **Output**: 配置项指定将编译的文件输出到磁盘的位置。注意：即使可以存在多个入口起点，但只指定一个输出配置。
+15. **Output**: 配置项指定将编译的文件输出到磁盘的位置。注意：即使可以存在多个入口起点，但只指定一个输出配置。
 
-  16. **Plugin**: webpack 插件是一个具有 apply 属性的 JavaScript 对象。apply 属性会被 webpack compiler 调用，并且插件可在整个编译生命周期访问。这些包通常会以某种方式扩展编译功能。
+16. **Plugin**: webpack 插件是一个具有 apply 属性的 JavaScript 对象。apply 属性会被 webpack compiler 调用，并且插件可在整个编译生命周期访问。这些包通常会以某种方式扩展编译功能。
 
-  17. [Request](https://webpack.docschina.org/guides/dependency-management/): 指在 require/import 语句中的表达式，如在 require("./template/" + name + ".ejs") 中的请求是 "./template/" + name + ".ejs" 。
+17. [Request](https://webpack.docschina.org/guides/dependency-management/): 指在 require/import 语句中的表达式，如在 require("./template/" + name + ".ejs") 中的请求是 "./template/" + name + ".ejs" 。
 
-  18. [Shimming](https://webpack.docschina.org/guides/shimming/): 并非所有 JS 文件都可以直接与 webpack 一起使用。有些文件可能是不支持的模块格式，甚至不是任何模块格式。shimming(预置依赖) 这时就会发挥作用。
+18. [Shimming](https://webpack.docschina.org/guides/shimming/): 并非所有 JS 文件都可以直接与 webpack 一起使用。有些文件可能是不支持的模块格式，甚至不是任何模块格式。shimming(预置依赖) 这时就会发挥作用。
 
-  19. **Target**: 用户配置的部署目标 此处列出 用于为特定环境编译，如浏览器、 NodeJS 或 Electron。
+19. **Target**: 用户配置的部署目标 此处列出 用于为特定环境编译，如浏览器、 NodeJS 或 Electron。
 
-  20. [Tree Shaking](https://webpack.docschina.org/guides/tree-shaking/): 删除未使用/多余的代码，或者更准确地说，实时代码导入。像 webpack 这样的编译器将通过分析各种 import 语句和导入代码的使用情况，来确定实际使用了依赖项的哪些部分来实现这一点，删除那些没有使用的 “树” 的部分。
+20. [Tree Shaking](https://webpack.docschina.org/guides/tree-shaking/): 删除未使用/多余的代码，或者更准确地说，实时代码导入。像 webpack 这样的编译器将通过分析各种 import 语句和导入代码的使用情况，来确定实际使用了依赖项的哪些部分来实现这一点，删除那些没有使用的 “树” 的部分。
 
-  21. **Vendor Entry Point**: 从 app.js 和 vendors.js 开始创建依赖图。这些依赖图完全是分开且独立的，允许使用 CommonsChunkPlugin，并将应用程序包的任何供应商（vendor）引用提取到你的供应商包中。有助于在 webpack 中实现一种称为 [长期供应商缓存](https://webpack.docschina.org/guides/caching/) 的常见模式。
+21. **Vendor Entry Point**: 从 app.js 和 vendors.js 开始创建依赖图。这些依赖图完全是分开且独立的，允许使用 CommonsChunkPlugin，并将应用程序包的任何供应商（vendor）引用提取到你的供应商包中。有助于在 webpack 中实现一种称为 [长期供应商缓存](https://webpack.docschina.org/guides/caching/) 的常见模式。
 
-  22. **webpack**: 一个用于现代 JavaScript 应用程序的高度可配置的 [module](https://webpack.docschina.org/concepts/modules) 打包工具。
+22. **webpack**: 一个用于现代 JavaScript 应用程序的高度可配置的 [module](https://webpack.docschina.org/concepts/modules) 打包工具。
 
 <br />
 
@@ -420,6 +498,8 @@ module.exports = {
 * [创建并发布一个 library](https://webpack.docschina.org/guides/author-libraries/)
 
 * [进程间通讯(IPC, inter process communication)]()
+
+* [Hot Module Replacement2](https://zhuanlan.zhihu.com/p/30669007)
 
 * [Dynamic Imports in Vue.js for better performance](https://vuedose.tips/dynamic-imports-in-vue-js-for-better-performance)
 
