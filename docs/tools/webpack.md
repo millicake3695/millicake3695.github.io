@@ -97,6 +97,7 @@ npx webpack --config my-webpack-config.js
   2. 被3个入口 chunk 共享的模块；  
 
   ```js
+  // webpack v3
   module.exports = {
     plugins: [
       new webpack.optimize.CommonsChunkPlugin({
@@ -125,6 +126,35 @@ npx webpack --config my-webpack-config.js
   2. 新的 chunk 体积在压缩之前是否大于 30kb；  
   3. 按需加载 chunk 的并发请求数量小于等于 5 个；  
   4. 页面初始加载时的并发请求数量小于等于 3 个；  
+
+  ```js
+  // webpack.config.js
+  module.exports = {
+      optimization: {
+          splitChunks: { //分割代码块
+              cacheGroups: {
+                  vendor: {
+                      //第三方依赖
+                      priority: 1, //设置优先级，首先抽离第三方模块
+                      name: 'vendor',
+                      test: /node_modules/,
+                      chunks: 'initial',
+                      minSize: 0,
+                      minChunks: 1 //最少引入了1次
+                  },
+                  //缓存组
+                  common: {
+                      //公共模块
+                      chunks: 'initial',
+                      name: 'common',
+                      minSize: 100, //大小超过100个字节
+                      minChunks: 3 //最少引入了3次
+                  }
+              }
+          }
+      }
+  }
+  ```
 
   :::warning
   尽管可以在 webpack 中允许每个页面使用多入口，仍应尽可能避免使用多入口的入口。推荐如下写法，如此在使用 async 脚本标签时，会有更好的优化以及一致的执行顺序。
@@ -229,7 +259,7 @@ loader <span class="red">本质就是一个函数</span>，用于对模块的源
 
 1. `test` 属性，识别出哪些文件会被转换。
 
-2. `use` 属性，定义出在进行转换时，应该使用哪个 loader。
+2. `use` 属性，定义出在进行转换时，应该使用哪个 loader。其值可为 字符串、数组，数组的每一项可以是字符串、对象。
 
 
 两种使用 loader 的方式：
@@ -266,12 +296,12 @@ loader <span class="red">本质就是一个函数</span>，用于对模块的源
 * `file-loader` : 把文件输出到一个文件夹中，在代码中使用相对路径引用输出的文件（处理图片和字体）
 * `url-loader` : 与 file-loader 类似，区别是可以设置一个阈值，大于阈值时交给 file-loader 处理，小于阈值时返回文件 base64 形式编码（处理图片和字体）
 * `image-loader` : 加载并压缩图片文件
-* `babel-loader` : 把 ES6 转换成 ES5
-* `less-loader` : 把 LESS 代码转换成 CSS
-* `css-loader` :  加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码，支持模块化、压缩、文件导入等特性
-* `style-loader` : 把 CSS 代码注入到 JS 中，通过 DOM 操作加载 CSS（放在 head 标签下的 style 标签）
-* `postcss-loader` : 扩展 CSS 语法，使用下一代 CSS，可以配合 autoprefixer 插件自动补齐 CSS3 前缀，配合 postcss-px-to-viewport 插件转换 px 为 vw
-* `eslint-loader` : 通过 ESlint 检查 JS 代码
+* `babel-loader` : 把 es6 转换成 es5
+* `less-loader` : 把 less 代码转换成 css
+* `css-loader` :  加载 css 文件并解析 import 的 css 文件，最终返回 css 代码，支持模块化、压缩、文件导入等特性
+* `style-loader` : 动态创建 style 标签，将 css 插入到 head 中
+* `postcss-loader` : 扩展 css 语法，使用下一代 css，可以配合 autoprefixer 插件自动补齐 CSS3 前缀，配合 postcss-px-to-viewport 插件转换 px 为 vw
+* `eslint-loader` : 通过 eslint 检查 js 代码
 * `vue-loader` : 加载并编译 Vue.js 单文件组件
 
 ---
@@ -287,12 +317,14 @@ loader <span class="red">本质就是一个函数</span>，用于对模块的源
 webpack 插件是一个具有 `apply` 方法的 JavaScript 对象。`apply` 方法会被 webpack compiler 调用，并且在 整个编译生命周期都可以访问 compiler 对象。
 
 :::tip
-plugin 基于事件流框架 `Tapable`，可以扩展 Webpack 的功能，在 Webpack 运行的生命周期中会广播出许多事件， plugin 可以监听这些事件，在合适的时机通过 Webpack 提供的 API 改变输出结果。
+plugin 基于事件流框架 `Tapable`，可以扩展 webpack 的功能。在 webpack 运行的生命周期中会广播出许多事件， plugin 可以监听这些事件，在合适的时机通过 webpack 提供的 API 改变输出结果。
 :::
 
 * html-webpack-plugin: 打包后自动生成一个 html 文件，并把打包生成的 js 自动引入。
 
 * clean-webpack-plugin: 打包前先清空打包目标文件夹的文件。
+
+* [terser-webpack-plugin](https://webpack.docschina.org/plugins/terser-webpack-plugin/): js多进程压缩和缓存。 webpack v5 默认开启， webpack v4 需手动安装 terser-webpack-plugin v4 版本。
 
 * sourceMap: 常用于定位代码错误位置。
 
@@ -322,6 +354,12 @@ plugin 基于事件流框架 `Tapable`，可以扩展 Webpack 的功能，在 We
 ### 模式(mode)
 
 通过选择 `development`, `production` 或 `none` 之中的一个来设置 `mode` 参数，以启用 webpack 内置在相应环境下的优化。其默认值为 production。
+
+修改的属性为 `process.env.NODE_ENV`。
+
+**development**: 启用 `NamedChunksPlugin` 和 `NamedModulesPlugin`。
+
+**production**: 启用 `FlagDependencyUsagePlugin`, `FlagIncludedChunksPlugin`, `ModuleConcatenationPlugin`, `NoEmitOnErrorsPlugin`, `OccurrenceOrderPlugin`, `SideEffectsFlagPlugin` 和 `UglifyJsPlugin`。
 
 ---
 
@@ -355,9 +393,60 @@ module.exports = {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[contenthash].chunk.js',
   },
-  mode: 'production',
   module: {
-    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+    rules: [
+      { test: /\.txt$/, use: 'raw-loader' },
+      {
+        test: /\.(le|c)ss$/,
+        use: [ 'style-loader', 'css-loader', {
+          loader: 'postcss-loader',
+          options: {
+            plugins: function () {
+              return [
+                require('autoprefixer')({
+                  overrideBrowserslist: [ '>0.25%', 'not dead' ]
+                })
+              ]
+            }
+          }
+        }, 'less-loader' ],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.jsx?$/,
+        use: {
+          loader: 'babel-loader',
+          // options 配置也可以写在 .babelrc 文件中
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: [
+              ['@babel/plugin-transform-runtime', { 'corjs': 3 }]
+            ]
+          }
+        },
+        include: [ path.resolve(__dirname, 'src') ]
+      },
+      {
+        test: /\.vue$/,
+        // 仅适用一个 loader 时
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            js: {
+              loader: 'babel-loader',
+              options: {
+                presets: [
+                  [ 'env', { targets: { browsers: pkg.browserslist } } ],
+                  'stage-2',
+                  'react'
+                ]
+              }
+            }
+          },
+          postcss: [ autoprefixer({ browsers: pkg.browserslist }) ]
+        }
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -403,13 +492,11 @@ module.exports = {
 
 2. chunkhash：和 Webpack 打包的 chunk 有关，不同的入口会生成不同的 chunkhash。
 
-  (JS)用于设置 output 的 filename。
+  (JS)用于设置 output 的 filename, chunkFilename。
 
 3. contenthash：根据文件内容来定义的 hash，内容不变，则 contenthash 不变。
 
   (CSS)设置 MiniCssExtractPlugin 的 filename，使用 contenthash。
-
-  (JS)设置 output 的 chunkFilename。
 
 ## webpack --watch
 
@@ -448,6 +535,8 @@ module.export = {
 8. **Entry Point**: 入口起点告诉 webpack 从哪里开始，并遵循着依赖图知道要打包哪些文件。您可以将应用程序的入口起点视为要捆绑的内容的 根上下文。
 
 9. [Hot Module Replacement](https://webpack.docschina.org/concepts/hot-module-replacement) (HMR)：模块热替换功能会在应用程序运行过程中替换、添加或删除 模块，而无需重新加载整个页面。
+
+    [Webpack HMR 原理解析](https://zhuanlan.zhihu.com/p/30669007)
 
 10. **Loaders**: loader 用于对模块的源代码进行转换。loader 可以使你在 require() 或"加载"模块时预处理文件。类似于一个 “task-runner”。
 
@@ -499,9 +588,9 @@ module.export = {
 
 * [进程间通讯(IPC, inter process communication)]()
 
-* [Hot Module Replacement2](https://zhuanlan.zhihu.com/p/30669007)
-
 * [Dynamic Imports in Vue.js for better performance](https://vuedose.tips/dynamic-imports-in-vue-js-for-better-performance)
+
+* [带你深度解锁Webpack系列(优化篇)](https://juejin.cn/post/6844904093463347208)
 
 <br/>
 
