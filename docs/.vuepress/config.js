@@ -59,7 +59,7 @@ module.exports = {
       recordIP: true, // 评论者ip
       visitor: true, // 文章访问量统计
       requiredFields: ['nick'], // 必填项
-      showComment: true
+      showComment: false
     },
     // 分类和标签
     blogConfig: {
