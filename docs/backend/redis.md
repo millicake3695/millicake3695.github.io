@@ -5,8 +5,8 @@ categories:
 tags:
  - redis
 # 文章访问加密密文32位md5，可设置多个
-keys:
- - 1c63129ae9db9c60c3e8aa94d3e00495
+# keys:
+#  - 1c63129ae9db9c60c3e8aa94d3e00495
 color: black
 ---
 

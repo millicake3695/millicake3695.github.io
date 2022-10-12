@@ -1,5 +1,5 @@
 ---
-title: 移动端兼容汇总
+title: 移动端兼容
 categories:
  - frontEnd
 tags:

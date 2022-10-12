@@ -97,9 +97,9 @@ tags:
 
   [related issue](https://github.com/nuxt/nuxt.js/issues/6823)
 
-### 其它
+<!-- ### 其它 -->
 
-  [Emoji](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.json)
+  <!-- [Emoji](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.json) -->
 
 <!-- <comm-header /> -->
 <!-- <comm-button /> -->
