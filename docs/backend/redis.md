@@ -10,6 +10,12 @@ tags:
 color: black
 ---
 
+### 中文API文档
+- [Redis命令手册](http://doc.redisfans.com/)
+
+### Redis for Windows
+- [Redis for Windows](https://github.com/MicrosoftArchive/redis/releases) - 仅用于学习命令使用,性能和稳定性不达标
+
 ### Key (键)
 
   keys  

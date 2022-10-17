@@ -6,10 +6,6 @@ tags:
  - rpc
 ---
 
-:::tip
-reocrd sth.
-:::
-
 <!-- more -->
 
 

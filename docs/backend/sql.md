@@ -14,6 +14,9 @@ tags:
 
 <!-- more -->
 
+### MySQL官方文档
+<https://dev.mysql.com/doc/refman/5.7/en/sql-statements.html>
+
 ### GUI Tools
 
 Mac OS X: [sequelpro](http://www.sequelpro.com/)
@@ -179,8 +182,48 @@ create index idx_table_xxx on table_name(age)
 
   最佳方案：预编译`sql`语句。本质是把传递进来的参数当做字符，转义字符被直接转义。
 
+  MySQL支持PreparedStatement特性，对SQL进行预编译  
+  调用时将SQL中动态参数用占位符(如?)代替，再将参数单独传递可以很大程度防止SQL注入  
+  Node.js中经常使用的包为[mysql](https://www.npmjs.com/package/mysql)或[mysql2](https://www.npmjs.com/package/mysql2)都有相应API
+    
+  ```js
+  // mysql
+  connection.query('SELECT * FROM `books` WHERE `author` = ?', ['David'], function (error, results, fields) {
+    // TODO
+  });
+  ```
+
+  ```js
+  // mysql2
+  const [rows, fields] = await connection.execute('SELECT * FROM `table` WHERE `name` = ? AND `age` > ?', ['Morty', 14]);
+  ```
+
   其它：
 
   - 限制数据库权限
   - 规定数据类型、长度
   - 过滤参数中的一些数据库关键词
+
+## insert/update or replace选用规则
+:::tip 重要的话说前面  
+**<font color='red'>replace ≠ insert or update</font>**  
+**<font color='red'>replace = insert or (delete + insert)</font>**
+:::
+
+### replace的行为
+
+* 当表未设置PRIMARY KEY或唯一索引时，replace行为完全等同于insert
+* 当待保存的数据的主键不存在于表中，replace行为完全等同于insert
+* 当待保存的数据的主键已存在于表中，则在插入新行之前删除该旧行，再进行insert
+* delete和insert作用于同一个事物中，形成一个原子操作
+
+### replace的前提
+
+* 要使用replace必须同时拥有表的insert和delete权限
+* <font color='red'>如果只"更新"部分字段不能使用replace，因为旧行将被删除，只能使用update</font>
+
+### replace的返回值
+
+* 如果返回1，说明在表中并没有重复的记录
+* 如果返回2，说明有一条重复记录，系统自动先调用了delete删除这条记录，然后再记录用insert来插入这条记录
+* 如果返回值大于2，那说明有多个主键或唯一索引，有多条记录被删除和插入
