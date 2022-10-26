@@ -19,7 +19,6 @@ export default ({ Vue }) => {
   }
 
   const vm = {
-    canvas: document.getElementById('myCanvas'),
     clickList: [
       { text: 'happy everyday', color: '#eb4339' },
       { text: 'welcome', color: '#823EFF' },
@@ -29,16 +28,7 @@ export default ({ Vue }) => {
     ],
     isMobile: isMobile(),
   };
-
   const len = vm.clickList.length;
-
-  class SpanEle {
-    constructor (x, y) {
-      this.x = x;
-      this.y = y;
-      this.opacity = 0.95;
-    }
-  }
   
   document.addEventListener('click', function (ev) {
     // ev = vm.isMobile ? ev.targetTouches[0] : ev;
