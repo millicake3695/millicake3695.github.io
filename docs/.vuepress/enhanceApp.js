@@ -12,17 +12,19 @@ export default (config) => {
   
   if (isServer) return;
 
-  const clickList = new Array('happy everyday', 'welcome', 'good good study', 'day day up', 'win-win');
+  const clickList = new Array('点我#', '起飞#', '你好#', '有缘人#', '早安#', '午安#', '晚安#');
 
   document.body.addEventListener('click', async function (ev) {
     const { pageX: X, pageY: Y } = ev;
     const index = Math.floor(Math.random() * clickList.length);
-    const [ red, green, blue ] = [ 
-      parseInt(Math.random() * 257).toString(16),
-      parseInt(Math.random() * 257).toString(16),
-      parseInt(Math.random() * 257).toString(16)
-    ];
-    const color = `#${red}${green}${blue}`;
+    const [ H, S, L ] = [ parseInt(Math.random() * 360), '100%', '50%'];
+    const color = `HSL(${H},${S},${L})`;
+    // const [ red, green, blue ] = [ 
+    //   parseInt(Math.random() * 257).toString(16),
+    //   parseInt(Math.random() * 257).toString(16),
+    //   parseInt(Math.random() * 257).toString(16)
+    // ];
+    // const color = `#${red}${green}${blue}`;
     const span = document.createElement('span');
     const textNode = document.createTextNode(clickList[index])
     span.appendChild(textNode);
@@ -35,6 +37,7 @@ export default (config) => {
     span.style.color = color;
     document.body.appendChild(span);
 
+    // element.animate() 返回一个 Animation 对象，包含一个是 Promise 的 finished 属性
     await span.animate([
       {
         transform: 'translateY(0)',
